@@ -1,0 +1,20 @@
+.calendar { width: 500px; }
+.calendar table { width: 100%; }
+.calendar table > caption { font-size: larger; font-weight: bolder; color: red; text-align: left; padding: 10px 20px; }
+.calendar table > thead > tr > th.saturday { color: gray; }
+.calendar table > thead > tr > th.sunday { color: red; }
+.calendar table > tbody > tr > td { text-align: center; vertical-align: top; }
+.calendar table > tbody > tr > td > span { display: block; }
+.calendar table > tbody > tr > td > span.today { border: 1px solid  #91BDCE; border-radius: 50%; color: white; background-color: #91BDCE; }
+.calendar table > tbody > tr > td > span.saturday { color: gray; }
+.calendar table > tbody > tr > td > span.sunday { color: red; }
+.calendar table > tbody > tr > td > span.holiday { color: red; }
+/* calendar month */
+.calendar.month table > tbody > tr > td { padding: 10px 10px; }
+.calendar.month table > tbody > tr > td > span { padding: 10px 10px; }
+.calendar.month table > tbody > tr > td > span.today { padding: 9px 9px; }
+/* calendar year */
+.calendar.year table { font-size: 12px; }
+.calendar.year table > thead > tr > th { font-weight: normal; }
+.calendar.year table > tbody > tr > td > span { padding: 2px 2px; }
+.calendar.year .calendar-month { height: 30px; font-size: 14px; font-weight: bolder; text-align: left; line-height: 30px; margin-left: 4px; }

@@ -1,0 +1,466 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- overlayScrollbars-->
+    <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style-->
+    <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+    <!-- Additional Stylesheets -->
+    <!-- Add any additional stylesheets here -->
+
+    <style>
+        #chat_list {
+            height : 700px;
+        }
+        
+        #chat_room {
+            border : 1px solid blue;
+            width : 300px;
+            height : 100%;
+            float : left;
+            overflow : auto;
+        }
+        
+        #chat_history {
+            border : 2px solid red;
+            width : 700px;
+            height : 100%;
+            float : left;
+            overflow : auto;
+        }
+        
+        
+        .main-sidebar {
+            background-color: #e9ddc6;
+        }
+        .mt-2 .nav .nav-item .nav-link p {
+            color : black;
+        }
+        .logo {
+            width : 231px;
+            height : 68px;
+        }
+    
+        #footer {
+            margin-left: 0px;
+        }
+        table {
+            width: 300px;
+        }
+        table, th {
+            border-collapse: collapse;
+            border : 1px solid black;
+        }
+        
+        
+        
+        .card {
+        background: #fff;
+        transition: .5s;
+        border: 0;
+        margin-bottom: 30px;
+        border-radius: .55rem;
+        position: relative;
+        width: 100%;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    }
+    .chat-app .people-list {
+        width: 280px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 20px;
+        z-index: 7
+    }
+    
+    .chat-app .chat {
+        margin-left: 280px;
+        border-left: 1px solid #eaeaea
+    }
+    
+    .people-list {
+        -moz-transition: .5s;
+        -o-transition: .5s;
+        -webkit-transition: .5s;
+        transition: .5s
+    }
+    
+    .people-list .chat-list li {
+        padding: 10px 15px;
+        list-style: none;
+        border-radius: 3px
+    }
+    
+    .people-list .chat-list li:hover {
+        background: #efefef;
+        cursor: pointer
+    }
+    
+    .people-list .chat-list li.active {
+        background: #efefef
+    }
+    
+    .people-list .chat-list li .name {
+        font-size: 15px
+    }
+    
+    .people-list .chat-list img {
+        width: 45px;
+        border-radius: 50%
+    }
+    
+    .people-list img {
+        float: left;
+        border-radius: 50%
+    }
+    
+    .people-list .about {
+        float: left;
+        padding-left: 8px
+    }
+    
+    .people-list .status {
+        color: #999;
+        font-size: 13px
+    }
+    
+    .chat .chat-header {
+        padding: 15px 20px;
+        border-bottom: 2px solid #f4f7f6
+    }
+    
+    .chat .chat-header img {
+        float: left;
+        border-radius: 40px;
+        width: 40px
+    }
+    
+    .chat .chat-header .chat-about {
+        float: left;
+        padding-left: 10px
+    }
+    
+    .chat .chat-history {
+        padding: 20px;
+        border-bottom: 2px solid #fff;
+        height:400px;
+        overflow: auto;
+    }
+    
+    .chat .chat-history ul {
+        padding: 0
+    }
+    
+    .chat .chat-history ul li {
+        list-style: none;
+        margin-bottom: 30px
+    }
+    
+    .chat .chat-history ul li:last-child {
+        margin-bottom: 0px
+    }
+    
+    .chat .chat-history .message-data {
+        margin-bottom: 15px
+    }
+    
+    .chat .chat-history .message-data img {
+        border-radius: 40px;
+        width: 40px
+    }
+    
+    .chat .chat-history .message-data-time {
+        color: #434651;
+        padding-left: 6px
+    }
+    
+    .chat .chat-history .message {
+        color: #444;
+        padding: 18px 20px;
+        line-height: 26px;
+        font-size: 16px;
+        border-radius: 7px;
+        display: inline-block;
+        position: relative
+    }
+    
+    .chat .chat-history .message:after {
+        bottom: 100%;
+        left: 7%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-width: 10px;
+        margin-left: -10px
+    }
+    
+    .chat .chat-history .my-message {
+        background: #efefef
+    }
+    
+    .chat .chat-history .my-message:after {
+        bottom: 100%;
+        left: 30px;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #efefef;
+        border-width: 10px;
+        margin-left: -10px
+    }
+    
+    .chat .chat-history .other-message {
+        background: #e8f1f3;
+        text-align: right
+    }
+    
+    .chat .chat-history .other-message:after {
+        border-bottom-color: #e8f1f3;
+        left: 93%
+    }
+    
+    .chat .chat-message {
+        padding: 20px
+    }
+    
+    .online,
+    .offline,
+    .me {
+        margin-right: 2px;
+        font-size: 8px;
+        vertical-align: middle
+    }
+    
+    .online {
+        color: #86c541
+    }
+    
+    .offline {
+        color: #e47297
+    }
+    
+    .me {
+        color: #1d8ecd
+    }
+    
+    .float-right {
+        float: right
+    }
+    
+    .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0
+    }
+    
+    @media only screen and (max-width: 767px) {
+        .chat-app .people-list {
+            height: 465px;
+            width: 100%;
+            overflow-x: auto;
+            background: #fff;
+            left: -400px;
+            display: none
+        }
+        .chat-app .people-list.open {
+            left: 0
+        }
+        .chat-app .chat {
+            margin: 0
+        }
+        .chat-app .chat .chat-header {
+            border-radius: 0.55rem 0.55rem 0 0
+        }
+        .chat-app .chat-history {
+            height: 300px;
+            overflow-x: auto;
+            overflow: auto;
+        }
+    }
+    
+    @media only screen and (min-width: 768px) and (max-width: 992px) {
+        .chat-app .chat-list {
+            height: 650px;
+            overflow-x: auto
+        }
+        .chat-app .chat-history {
+            height: 600px;
+            overflow-x: auto;
+            overflow: auto;
+        }
+    }
+    
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+        .chat-app .chat-list {
+            height: 480px;
+            overflow-x: auto
+        }
+        .chat-app .chat-history {
+            height: calc(100vh - 350px);
+            overflow-x: auto;
+            overflow: auto;
+        }
+    }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <%- include("header.ejs") %>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">채팅</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard v1</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="container">
+                        <div class="row clearfix">
+                            <div class="col-lg-12">
+                                <div class="card chat-app">
+                                    <div id="plist" class="people-list">
+                                        <div class="input-group">
+                                            <!-- Add your input group content here -->
+                                        </div>
+                                        <ul class="list-unstyled chat-list mt-2 mb-0">
+                                            <!-- Add your chat list items here -->
+                                        </ul>
+                                    </div>
+                                    <div class="chat">
+                                        <div class="chat-header clearfix">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <a id="myProfilePhoto" href="javascript:void(0);" data-toggle="modal" data-target="#view_info"></a>
+                                                    <div class="chat-about">
+                                                        
+                                                        <h6 class="m-b-0">sessionScope.loginId</h6>
+                                                        <small></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 hidden-sm text-right">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatCreateModal" onclick="create()">채팅방 생성하기</button>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatInviteModal" onclick="invite()">초대하기</button>
+                                                    <button type="button" class="btn btn-primary" onclick="chat_room_exit()">채팅방 나가기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-history">
+                                            <ul class="m-b-0 chat_history">
+                                                <!-- Add your chat history items here -->
+                                            </ul>
+                                        </div>
+                                        <div class="chat-message clearfix">
+                                            <div class="input-group mb-0">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-send"></i></span>
+                                                </div>
+                                                <input id="content" type="text" class="form-control" placeholder="Enter text here...">                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+
+            <!-- Modals -->
+            <!-- Add your modals here -->
+
+            <%- include("footer.ejs") %>
+
+            <h1>Ajax 통신 예제</h1>
+
+            <!-- 서버로부터 받은 응답을 표시하는 영역 -->
+            <div id="response"></div>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+    
+
+    <!-- JavaScript -->
+    <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../dist/js/adminlte.min.js"></script>
+    <!-- Additional Scripts -->
+    <!-- Add any additional JavaScript files here -->
+    <!-- SockJS and Stomp 
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    -->
+    <!-- <script src="../socket.io/client-dist/socket.io.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Add your JavaScript code here
+        var socket = io(); // Socket.io 서버에 연결
+
+        var message = '안녕하세요';
+        $.ajax({
+            type: "GET",
+            url: "/ajaxHandler", // 서버의 URL 매핑
+            data: {'message' : message},
+            success: function(data) {
+                // 서버에서 받은 데이터를 처리
+                $("#response").html(data);
+            },
+            error: function(error) {
+                console.log("오류 발생: " + error);
+            }
+        });
+    </script>
+</body>
+<script>
+    
+
+</script>
+</html>
